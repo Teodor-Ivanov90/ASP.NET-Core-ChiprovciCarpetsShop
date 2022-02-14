@@ -1,0 +1,48 @@
+﻿@model AddProductFormModel
+@{ 
+    ViewBag.Title = "Add car";
+}
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="TypeId"></label>
+                <select asp-for="TypeId" class="form-control">
+                    @foreach (var type in Model.Types)
+                    {
+                        <option value="@type.Id">@type.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="TypeId" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Model"></label>
+                <input asp-for="Model" class="form-control" placeholder="Pirotski,Kanatica,etc...">
+                <span asp-validation-for="Model" class="small text-danger"></span> 
+            </div>
+            <div class="form-group">
+                <label asp-for="Material"></label>
+                <input asp-for="Material" class="form-control" placeholder="Woven, cotton, etc...">
+                <span asp-validation-for="Material" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Maker"></label>
+                <input asp-for="Maker" class="form-control" placeholder="Enter maker names">
+                <span asp-validation-for="Maker" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="YearOfMade"></label>
+                <input asp-for="YearOfMade" class="form-control" placeholder="@DateTime.Now.Year">
+                <span asp-validation-for="YearOfMade" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Pirotski,Kanatica,etc...">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+            </div>
+            <input class="btn btn-primary mt-3" type="submit" value="Save" />
+        </form>
+    </div>
+</div>

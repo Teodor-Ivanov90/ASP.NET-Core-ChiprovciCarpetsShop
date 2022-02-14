@@ -1,12 +1,12 @@
 ﻿using ChiprovciCarpetsShop.Data;
-using ChiprovskiKilimi.Data.Models;
+using ChiprovciCarpetsShop.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace ChiprovskiKilimi.Infrastructures.Extensions
+namespace ChiprovciCarpetsShop.Infrastructures.Extensions
 {
     public static class ApplicationBuilderExtension
     {
