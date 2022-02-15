@@ -1,4 +1,6 @@
-﻿using ChiprovciCarpetsShop.Models;
+﻿using ChiprovciCarpetsShop.Data;
+using ChiprovciCarpetsShop.Models;
+using ChiprovciCarpetsShop.Models.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,10 +13,27 @@ namespace ChiprovciCarpetsShop.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ChiprovciCapretsDbContext data;
+
+        public HomeController(ChiprovciCapretsDbContext data)
+            => this.data = data;
 
         public IActionResult Index()
         {
-            return View();
+            var products = this.data
+               .Products
+               .OrderByDescending(p => p.Id)
+               .Select(p => new AllProductsViewModel
+               {
+                   Id = p.Id,
+                   Model = p.Model,
+                   ImageUrl = p.ImageUrl,
+                   ProductType = p.Type.Name
+               })
+               .Take(3)
+               .ToList();
+
+            return View(products);
         }
 
 

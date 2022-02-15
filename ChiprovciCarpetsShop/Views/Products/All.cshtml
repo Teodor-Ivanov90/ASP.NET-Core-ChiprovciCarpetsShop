@@ -1,0 +1,16 @@
+﻿@model IEnumerable<AllProductsViewModel>
+
+<div class="row">
+        @foreach (var product in Model)
+        {
+    <div class="col-md-4">
+        <div class="card mb-5">
+            <img class="card-img-top" src="@product.ImageUrl" width="200" height="300" alt=@product.ProductType>
+            <div class="card-body text-center">
+                <h5 class="card-title text-center">@product.ProductType @product.Model</h5>
+                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    </div>
+        }
+</div>

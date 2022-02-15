@@ -12,8 +12,23 @@ namespace ChiprovciCarpetsShop.Controllers
         private readonly ChiprovciCapretsDbContext data;
 
         public ProductsController(ChiprovciCapretsDbContext data)
+            => this.data = data;
+
+        public IActionResult All()
         {
-            this.data = data;
+            var products = this.data
+                .Products
+                .OrderByDescending(p => p.Id)
+                .Select(p => new AllProductsViewModel
+                {
+                    Id = p.Id,
+                    Model = p.Model,
+                    ImageUrl = p.ImageUrl,
+                    ProductType = p.Type.Name
+                })
+                .ToList();
+
+            return View(products);
         }
 
         public IActionResult Add()
@@ -53,7 +68,7 @@ namespace ChiprovciCarpetsShop.Controllers
 
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
         private IEnumerable<ProductTypeFormModel> GetProductTypes()
