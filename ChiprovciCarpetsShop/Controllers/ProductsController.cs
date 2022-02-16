@@ -14,11 +14,35 @@ namespace ChiprovciCarpetsShop.Controllers
         public ProductsController(ChiprovciCapretsDbContext data)
             => this.data = data;
 
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllProductsQueryModel query)
         {
-            var products = this.data
-                .Products
-                .OrderByDescending(p => p.Id)
+            var productsQuery = this.data.Products.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Type))
+            {
+                productsQuery = productsQuery
+                    .Where(p =>
+                    p.Type.Name == query.Type);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                productsQuery = productsQuery
+                    .Where(p =>
+                    p.Model.ToLower().Contains(query.SearchTerm.ToLower()) ||
+                    p.Maker.ToLower().Contains(query.SearchTerm.ToLower()) ||
+                    p.Type.Name.ToLower().Contains(query.SearchTerm.ToLower())
+                    );
+            }
+
+            productsQuery = query.Sorting switch
+            {
+                ProductSorting.Model => productsQuery.OrderBy(p => p.Model),
+                ProductSorting.Type => productsQuery.OrderBy(p => p.Type.Name),
+                ProductSorting.DateCreated or _ => productsQuery.OrderByDescending(p => p.Id)
+            };
+
+            var products = productsQuery
                 .Select(p => new AllProductsViewModel
                 {
                     Id = p.Id,
@@ -28,7 +52,15 @@ namespace ChiprovciCarpetsShop.Controllers
                 })
                 .ToList();
 
-            return View(products);
+            var types = this.data.ProductTypes
+                .Select(pt => pt.Name)
+                .OrderBy(pt => pt)
+                .ToList();
+
+            query.Products = products;
+            query.Types = types;
+
+            return View(query);
         }
 
         public IActionResult Add()
