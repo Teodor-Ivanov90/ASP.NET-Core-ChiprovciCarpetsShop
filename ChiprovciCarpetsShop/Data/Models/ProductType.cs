@@ -10,7 +10,7 @@ namespace ChiprovciCarpetsShop.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(ProductTypeNameMaxLength)]
+        [MaxLength(TypeNameMaxLength)]
         public string Name { get; set; }
 
         public IEnumerable<Product> Products { get; set; } = new List<Product>();

@@ -13,20 +13,20 @@ namespace ChiprovciCarpetsShop.Models.Products
         public IEnumerable<ProductTypeFormModel> Types { get; set; }
 
         [Required]
-        [StringLength(ProductModelMaxLength, MinimumLength = ProductModelMinLength)]
+        [StringLength(ModelMaxLength, MinimumLength = ModelMinLength)]
         public string Model { get; set; }
 
         [Required]
-        [StringLength(ProductMaterialMaxLength, MinimumLength = ProductMaterialMinLength)]
+        [StringLength(MaterialMaxLength, MinimumLength = MaterialMinLength)]
         public string Material { get; set; }
 
         [Required]
-        [StringLength(ProductMakerMaxLength, MinimumLength = ProductMakerMinLength)]
+        [StringLength(MakerMaxLength, MinimumLength = MakerMinLength)]
         public string Maker { get; set; }
 
         [Required]
         [Display(Name = "Year of made")]
-        [Range(ProductMinYear, ProductMaxYear)]
+        [Range(MinYear, MaxYear)]
         public int YearOfMade { get; set; }
 
         [Required]

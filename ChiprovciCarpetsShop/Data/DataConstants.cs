@@ -6,23 +6,29 @@ namespace ChiprovciCarpetsShop.Data
     {
         public static class Product
         {
-            public const int ProductModelMinLength = 3;
-            public const int ProductModelMaxLength = 30;
+            public const int ModelMinLength = 3;
+            public const int ModelMaxLength = 30;
 
-            public const int ProductMaterialMinLength = 3;
-            public const int ProductMaterialMaxLength = 30;
+            public const int MaterialMinLength = 3;
+            public const int MaterialMaxLength = 30;
 
-            public const int ProductMakerMinLength = 3;
-            public const int ProductMakerMaxLength = 30;
+            public const int MakerMinLength = 3;
+            public const int MakerMaxLength = 30;
 
-            public const int ProductMinYear = 1800;
-            public const int ProductMaxYear = 2022;
+            public const int MinYear = 1800;
+            public const int MaxYear = 2022;
         }
 
+        public static class Dealer
+        {
+            public const int NameMaxLength = 20;
+
+            public const int PhoneNumberMaxLength = 30;
+        }
         public static class ProductType
         {
-            public const int ProductTypeNameMinLength = 3;
-            public const int ProductTypeNameMaxLength = 30;
+            public const int TypeNameMinLength = 3;
+            public const int TypeNameMaxLength = 30;
 
             
         }
