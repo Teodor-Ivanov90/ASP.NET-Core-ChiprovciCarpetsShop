@@ -42,13 +42,18 @@ namespace ChiprovciCarpetsShop.Controllers
                 ProductSorting.DateCreated or _ => productsQuery.OrderByDescending(p => p.Id)
             };
 
+            var totalProducts = productsQuery.Count();
+
             var products = productsQuery
+                .Skip((query.CurrentPage-1) * AllProductsQueryModel.ProductsPerPage)
+                .Take(AllProductsQueryModel.ProductsPerPage)
                 .Select(p => new AllProductsViewModel
                 {
                     Id = p.Id,
                     Model = p.Model,
                     ImageUrl = p.ImageUrl,
-                    ProductType = p.Type.Name
+                    ProductType = p.Type.Name,
+                  
                 })
                 .ToList();
 
@@ -59,6 +64,7 @@ namespace ChiprovciCarpetsShop.Controllers
 
             query.Products = products;
             query.Types = types;
+            query.TotalProducts = totalProducts;
 
             return View(query);
         }

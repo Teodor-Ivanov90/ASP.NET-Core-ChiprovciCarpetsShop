@@ -1,51 +1,89 @@
 ﻿@model AllProductsQueryModel
 
-    <form method="get">
-        <div class="row">
-            <div class="form-group col-md-4">
-                <div class="form-group">
-                    <label asp-for="Type"></label>
-                    <select asp-for="Type" class="form-control">
-                        <option value="">All</option>
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Type"></label>
+                <select asp-for="Type" class="form-control">
+                    <option value="">All</option>
 
-                        @foreach (var type in Model.Types)
-                        {
-                            <option value="@type">@type</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="SearchTerm"></label>
-                <input asp-for="SearchTerm" class="form-control">
-            </div>
-            <div class="form-group col-md-4">
-                <div class="form-group">
-                    <label asp-for="Sorting"></label>
-                    <select asp-for="Sorting" class="form-control">
-                       <option value="0" selected>Date Created</option>
-                       <option value="1" >Model</option>
-                       <option value="2" >Type</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group col-md-3">
-                <input type="submit" class="btn-primary d-none" value="Search" />
+                    @foreach (var type in Model.Types)
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
             </div>
         </div>
-    </form>
-
-<div class="row">
-        @foreach (var product in Model.Products)
-        {
-    <div class="col-md-4">
-        <div class="card mb-5">
-            <img class="card-img-top" src="@product.ImageUrl" width="200" height="300" alt=@product.ProductType>
-            <div class="card-body text-center">
-                <h5 class="card-title text-center">@product.ProductType @product.Model</h5>
-                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
+        <div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Sorting"></label>
+                <select asp-for="Sorting" class="form-control">
+                    <option value="0" selected>Date Created</option>
+                    <option value="1">Model</option>
+                    <option value="2">Type</option>
+                </select>
             </div>
+        </div>
+        <div class="form-group col-md-3">
+            <input type="submit" class="btn-primary d-none" value="Search" />
         </div>
     </div>
-        }
+</form>
+
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-md-4">
+            <div class="card mb-5">
+                <img class="card-img-top" src="@product.ImageUrl" width="200" height="300" alt=@product.ProductType>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@product.ProductType @product.Model</h5>
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+}
+
+@{ 
+    var allPages = Math.Ceiling((Model.TotalProducts) / (decimal)AllProductsQueryModel.ProductsPerPage);
+}
+
+@{
+    var nextPage = Model.CurrentPage + 1;
+    if (nextPage > allPages)
+    {
+        nextPage = (int)allPages;
+    }
+}
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-primary @(Model.CurrentPage -1 ==0 ? "disabled" : string.Empty)  float-right"
+           asp-controller="Products" asp-action="All"
+           asp-route-CurrentPage="@previousPage"
+            asp-route-type="@Model.Type"
+            asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@Model.Sorting"><<</a>
+    </div>
+    <div class="col-md-6">
+        <a class=" btn btn-primary  @(Model.CurrentPage +1 > allPages ? "disabled" : string.Empty)"
+           asp-controller="Products"
+           asp-action="All" asp-route-CurrentPage="@(Model.CurrentPage + 1)"
+            asp-route-type="@Model.Type"
+            asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@Model.Sorting">>></a>
+    </div>
 </div>
