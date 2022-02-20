@@ -1,9 +1,12 @@
 ﻿using ChiprovciCarpetsShop.Data;
 using ChiprovciCarpetsShop.Data.Models;
+using ChiprovciCarpetsShop.Infrastructures.Extension;
 using ChiprovciCarpetsShop.Models.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace ChiprovciCarpetsShop.Controllers
 {
@@ -69,8 +72,18 @@ namespace ChiprovciCarpetsShop.Controllers
             return View(query);
         }
 
+        [Authorize]
         public IActionResult Add()
         {
+            var isUserDealer = this.data
+                .Dealers
+                .Any(d => d.UserId == this.User.Id());
+
+            if (!isUserDealer)
+            {
+                return RedirectToAction("Become", "Dealers");
+            }
+                
             return View(new AddProductFormModel
             {
                 Types = GetProductTypes()
@@ -78,6 +91,7 @@ namespace ChiprovciCarpetsShop.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddProductFormModel product)
         {
             if (!this.data.ProductTypes.Any(pt => pt.Id == product.TypeId))
@@ -92,6 +106,12 @@ namespace ChiprovciCarpetsShop.Controllers
                 return View(product);
             }
 
+            var dealerId = this.data.Dealers
+                .Where(d => d.UserId == this.User.Id())
+                .Select(d => d.Id)
+                .FirstOrDefault();
+                
+
             var productData = new Product
             {
                 Model = product.Model,
@@ -99,7 +119,8 @@ namespace ChiprovciCarpetsShop.Controllers
                 Maker = product.Maker,
                 YearOfMade = product.YearOfMade,
                 TypeId = product.TypeId,
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl,
+                DealerId = dealerId
             };
 
             this.data.Products.Add(productData);

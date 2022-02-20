@@ -15,8 +15,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.14" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructures\Extension\" />
-  </ItemGroup>
-
 </Project>

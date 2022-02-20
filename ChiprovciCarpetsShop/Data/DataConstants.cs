@@ -21,9 +21,11 @@ namespace ChiprovciCarpetsShop.Data
 
         public static class Dealer
         {
+            public const int NameMinLength = 2;
             public const int NameMaxLength = 20;
 
             public const int PhoneNumberMaxLength = 30;
+            public const string PhoneRegex = @"^\+359[0-9]{9}$";
         }
         public static class ProductType
         {
