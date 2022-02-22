@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChiprovciCarpetsShop.Data.Migrations
 {
-    [DbContext(typeof(ChiprovciCapretsDbContext))]
+    [DbContext(typeof(ChiprovciCarpetsDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

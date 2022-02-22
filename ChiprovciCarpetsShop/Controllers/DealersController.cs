@@ -10,9 +10,9 @@ namespace ChiprovciCarpetsShop.Controllers
 {
     public class DealersController : Controller
     {
-        private readonly ChiprovciCapretsDbContext data;
+        private readonly ChiprovciCarpetsDbContext data;
 
-        public DealersController(ChiprovciCapretsDbContext data) 
+        public DealersController(ChiprovciCarpetsDbContext data) 
             => this.data = data;
 
         [Authorize]

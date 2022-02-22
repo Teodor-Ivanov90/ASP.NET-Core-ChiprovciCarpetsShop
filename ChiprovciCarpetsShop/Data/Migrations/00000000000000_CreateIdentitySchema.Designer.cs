@@ -9,7 +9,7 @@ using System;
 
 namespace ChiprovciCarpetsShop.Data.Migrations
 {
-    [DbContext(typeof(ChiprovciCapretsDbContext))]
+    [DbContext(typeof(ChiprovciCarpetsDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

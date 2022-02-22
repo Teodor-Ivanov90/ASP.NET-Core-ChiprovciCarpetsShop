@@ -23,7 +23,7 @@ namespace ChiprovciCarpetsShop.Infrastructures.Extensions
 
         private static void SeedTypes(IServiceProvider services)
         {
-            var data = services.GetRequiredService<ChiprovciCapretsDbContext>();
+            var data = services.GetRequiredService<ChiprovciCarpetsDbContext>();
 
             if (data.ProductTypes.Any())
             {
@@ -44,7 +44,7 @@ namespace ChiprovciCarpetsShop.Infrastructures.Extensions
 
         private static void MigrateDatabase(IServiceProvider services)
         {
-             var data = services.GetRequiredService<ChiprovciCapretsDbContext>();
+             var data = services.GetRequiredService<ChiprovciCarpetsDbContext>();
 
             data.Database.Migrate();
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ChiprovciCarpetsShop.Services.Products;
+using System.Collections.Generic;
 
 namespace ChiprovciCarpetsShop.Models.Products
 {
@@ -18,6 +19,6 @@ namespace ChiprovciCarpetsShop.Models.Products
 
         public int CurrentPage { get; set; } = 1;
 
-        public IEnumerable<AllProductsViewModel> Products { get; set; }
+        public IEnumerable<ProductServiceModel> Products { get; set; }
     }
 }

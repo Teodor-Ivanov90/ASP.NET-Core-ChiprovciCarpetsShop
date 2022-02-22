@@ -1,9 +1,7 @@
-﻿using ChiprovciCarpetsShop.Services.Products;
-using System.Collections.Generic;
-
-namespace ChiprovciCarpetsShop.Models.Api.Products
+﻿namespace ChiprovciCarpetsShop.Services.Products
 {
-    public class AllProductsApiResponseModel
+    using System.Collections.Generic;
+    public class ProductsQueryServiceModel
     {
         public int CurrentPage { get; set; }
 

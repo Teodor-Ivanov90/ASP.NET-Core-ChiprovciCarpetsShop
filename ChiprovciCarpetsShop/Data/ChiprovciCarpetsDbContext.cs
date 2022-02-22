@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChiprovciCarpetsShop.Data
 {
-    public class ChiprovciCapretsDbContext : IdentityDbContext
+    public class ChiprovciCarpetsDbContext : IdentityDbContext
     {
-        public ChiprovciCapretsDbContext(DbContextOptions<ChiprovciCapretsDbContext> options)
+        public ChiprovciCarpetsDbContext(DbContextOptions<ChiprovciCarpetsDbContext> options)
             : base(options)
         {
         }

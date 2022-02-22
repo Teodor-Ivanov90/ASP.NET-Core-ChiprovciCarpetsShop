@@ -1,5 +1,6 @@
 using ChiprovciCarpetsShop.Data;
 using ChiprovciCarpetsShop.Infrastructures.Extensions;
+using ChiprovciCarpetsShop.Services.Products;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +20,7 @@ namespace ChiprovciCarpetsShop
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddDbContext<ChiprovciCapretsDbContext>(options =>
+                .AddDbContext<ChiprovciCarpetsDbContext>(options =>
                 options.UseSqlServer(  Configuration.GetConnectionString("DefaultConnection")));
 
             services
@@ -33,10 +34,12 @@ namespace ChiprovciCarpetsShop
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-                .AddEntityFrameworkStores<ChiprovciCapretsDbContext>();
+                .AddEntityFrameworkStores<ChiprovciCarpetsDbContext>();
 
             services
                 .AddControllersWithViews();
+
+            services.AddTransient<IProductService,ProductService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,21 +1,17 @@
 ﻿using ChiprovciCarpetsShop.Data;
 using ChiprovciCarpetsShop.Models;
-using ChiprovciCarpetsShop.Models.Products;
+using ChiprovciCarpetsShop.Services.Products;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChiprovciCarpetsShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ChiprovciCapretsDbContext data;
+        private readonly ChiprovciCarpetsDbContext data;
 
-        public HomeController(ChiprovciCapretsDbContext data)
+        public HomeController(ChiprovciCarpetsDbContext data)
             => this.data = data;
 
         public IActionResult Index()
@@ -23,7 +19,7 @@ namespace ChiprovciCarpetsShop.Controllers
             var products = this.data
                .Products
                .OrderByDescending(p => p.Id)
-               .Select(p => new AllProductsViewModel
+               .Select(p => new ProductServiceModel
                {
                    Id = p.Id,
                    Model = p.Model,

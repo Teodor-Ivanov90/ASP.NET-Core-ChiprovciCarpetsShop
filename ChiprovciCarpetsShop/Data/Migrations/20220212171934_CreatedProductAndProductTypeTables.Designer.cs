@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChiprovciCarpetsShop.Data.Migrations
 {
-    [DbContext(typeof(ChiprovciCapretsDbContext))]
+    [DbContext(typeof(ChiprovciCarpetsDbContext))]
     [Migration("20220212171934_CreatedProductAndProductTypeTables")]
     partial class CreatedProductAndProductTypeTables
     {
