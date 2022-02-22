@@ -1,6 +1,7 @@
 ﻿using ChiprovciCarpetsShop.Data;
 using ChiprovciCarpetsShop.Data.Models;
 using ChiprovciCarpetsShop.Infrastructures.Extension;
+using ChiprovciCarpetsShop.Models;
 using ChiprovciCarpetsShop.Models.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

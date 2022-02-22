@@ -18,7 +18,6 @@ namespace ChiprovciCarpetsShop.Models.Products
 
         public int CurrentPage { get; set; } = 1;
 
-
         public IEnumerable<AllProductsViewModel> Products { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ChiprovciCarpetsShop.Models.Products
+﻿namespace ChiprovciCarpetsShop.Models
 {
     public enum ProductSorting
     {

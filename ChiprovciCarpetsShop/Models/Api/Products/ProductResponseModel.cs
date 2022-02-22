@@ -1,6 +1,6 @@
-﻿namespace ChiprovciCarpetsShop.Models.Products
+﻿namespace ChiprovciCarpetsShop.Models.Api.Products
 {
-    public class AllProductsViewModel
+    public class ProductResponseModel
     {
         public int Id { get; set; }
 
