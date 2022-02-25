@@ -57,7 +57,7 @@ namespace ChiprovciCarpetsShop.Controllers
                 
             return View(new AddProductFormModel
             {
-                Types = GetProductTypes()
+                Types = this.products.GetProductTypes()
             }) ;
         }
 
