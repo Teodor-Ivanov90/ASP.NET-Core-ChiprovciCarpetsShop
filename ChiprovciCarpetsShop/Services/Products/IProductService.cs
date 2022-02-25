@@ -1,4 +1,6 @@
-﻿using ChiprovciCarpetsShop.Models;
+﻿using ChiprovciCarpetsShop.Data.Models;
+using ChiprovciCarpetsShop.Models;
+using ChiprovciCarpetsShop.Models.Products;
 using System.Collections.Generic;
 
 namespace ChiprovciCarpetsShop.Services.Products
@@ -13,5 +15,9 @@ namespace ChiprovciCarpetsShop.Services.Products
             int productsPerPage);
 
         IEnumerable<string> AllProductTypes();
+
+        bool IsTypeValid(AddProductFormModel product);
+
+        IEnumerable<ProductTypeFormModel> GetProductTypes();
     }
 }

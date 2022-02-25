@@ -1,5 +1,7 @@
 ﻿using ChiprovciCarpetsShop.Data;
+using ChiprovciCarpetsShop.Data.Models;
 using ChiprovciCarpetsShop.Models;
+using ChiprovciCarpetsShop.Models.Products;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,14 +11,14 @@ namespace ChiprovciCarpetsShop.Services.Products
     {
         private readonly ChiprovciCarpetsDbContext data;
 
-        public ProductService(ChiprovciCarpetsDbContext data) 
+        public ProductService(ChiprovciCarpetsDbContext data)
             => this.data = data;
 
         public ProductsQueryServiceModel All(
             string type,
             string searchTerm,
-            ProductSorting sorting, 
-            int currentPage, 
+            ProductSorting sorting,
+            int currentPage,
             int productsPerPage)
         {
             var productsQuery = this.data.Products.AsQueryable();
@@ -54,6 +56,7 @@ namespace ChiprovciCarpetsShop.Services.Products
                 {
                     Id = p.Id,
                     Model = p.Model,
+                    Price = p.Price,
                     ImageUrl = p.ImageUrl,
                     ProductType = p.Type.Name,
 
@@ -69,14 +72,29 @@ namespace ChiprovciCarpetsShop.Services.Products
             };
         }
 
-        
+
 
         public IEnumerable<string> AllProductTypes()
         {
-           return this.data.ProductTypes
-                .Select(pt => pt.Name)
-                .OrderBy(pt => pt)
-                .ToList();
+            return this.data.ProductTypes
+                 .Select(pt => pt.Name)
+                 .OrderBy(pt => pt)
+                 .ToList();
         }
+
+        public IEnumerable<ProductTypeFormModel> GetProductTypes()
+           =>
+            this.data
+            .ProductTypes
+            .Select(pt => new ProductTypeFormModel
+            {
+                Id = pt.Id,
+                Name = pt.Name
+            })
+            .ToList();
+
+
+        public bool IsTypeValid(AddProductFormModel product)
+            => !this.data.ProductTypes.Any(pt => pt.Id == product.TypeId);
     }
 }

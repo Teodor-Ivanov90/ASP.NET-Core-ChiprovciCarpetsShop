@@ -1,14 +1,13 @@
 ﻿using ChiprovciCarpetsShop.Data;
 using ChiprovciCarpetsShop.Data.Models;
 using ChiprovciCarpetsShop.Infrastructures.Extension;
-using ChiprovciCarpetsShop.Models;
 using ChiprovciCarpetsShop.Models.Products;
+using ChiprovciCarpetsShop.Services.Dealers;
 using ChiprovciCarpetsShop.Services.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 
 namespace ChiprovciCarpetsShop.Controllers
 {
@@ -16,11 +15,16 @@ namespace ChiprovciCarpetsShop.Controllers
     {
         private readonly ChiprovciCarpetsDbContext data;
         private readonly IProductService products;
+        private readonly IDealerService dealers;
 
-        public ProductsController(ChiprovciCarpetsDbContext data, IProductService products)
+        public ProductsController(
+            ChiprovciCarpetsDbContext data, 
+            IProductService products, 
+            IDealerService dealers)
         {
             this.data = data;
             this.products = products;
+            this.dealers = dealers;
         }
 
         public IActionResult All([FromQuery] AllProductsQueryModel query)
@@ -44,9 +48,7 @@ namespace ChiprovciCarpetsShop.Controllers
         [Authorize]
         public IActionResult Add()
         {
-            var isUserDealer = this.data
-                .Dealers
-                .Any(d => d.UserId == this.User.Id());
+            var isUserDealer = this.dealers.UserIsAlreadyDealer(this.User.Id());
 
             if (!isUserDealer)
             {
@@ -63,28 +65,27 @@ namespace ChiprovciCarpetsShop.Controllers
         [Authorize]
         public IActionResult Add(AddProductFormModel product)
         {
-            if (!this.data.ProductTypes.Any(pt => pt.Id == product.TypeId))
+            var isTypeValid = this.products.IsTypeValid(product);
+
+            if (!isTypeValid)
             {
                 this.ModelState.AddModelError(nameof(product.TypeId), "The product type is invalid!");
-            }
-
+            }    
+            
             if (!ModelState.IsValid)
             {
-                product.Types = this.GetProductTypes();
+                product.Types = this.products.GetProductTypes();
 
                 return View(product);
             }
 
-            var dealerId = this.data.Dealers
-                .Where(d => d.UserId == this.User.Id())
-                .Select(d => d.Id)
-                .FirstOrDefault();
+            var dealerId = this.dealers.GetId(this.User.Id());
                 
-
             var productData = new Product
             {
                 Model = product.Model,
                 Material = product.Material,
+                Price = product.Price,
                 Maker = product.Maker,
                 YearOfMade = product.YearOfMade,
                 TypeId = product.TypeId,
@@ -99,14 +100,5 @@ namespace ChiprovciCarpetsShop.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        private IEnumerable<ProductTypeFormModel> GetProductTypes()
-            => this.data
-            .ProductTypes
-            .Select(pt => new ProductTypeFormModel
-            {
-                Id = pt.Id,
-                Name = pt.Name
-            })
-            .ToList();
     }
 }

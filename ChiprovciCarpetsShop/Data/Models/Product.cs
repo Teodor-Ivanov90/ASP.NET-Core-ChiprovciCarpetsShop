@@ -17,6 +17,9 @@ namespace ChiprovciCarpetsShop.Data.Models
         [MaxLength(ModelMaxLength)]
         public string Model { get; set; }
 
+        [Range(0, double.MaxValue)]
+        public decimal Price { get; set; }
+
         [Required]
         [MaxLength(MaterialMaxLength)]
         public string Material { get; set; }

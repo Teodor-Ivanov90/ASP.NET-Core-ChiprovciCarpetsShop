@@ -1,5 +1,6 @@
 using ChiprovciCarpetsShop.Data;
 using ChiprovciCarpetsShop.Infrastructures.Extensions;
+using ChiprovciCarpetsShop.Services.Dealers;
 using ChiprovciCarpetsShop.Services.Products;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,7 @@ namespace ChiprovciCarpetsShop
                 .AddControllersWithViews();
 
             services.AddTransient<IProductService,ProductService>();
+            services.AddTransient<IDealerService,DealerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
