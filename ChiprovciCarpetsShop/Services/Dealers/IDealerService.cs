@@ -5,9 +5,9 @@ namespace ChiprovciCarpetsShop.Services.Dealers
 {
     public interface IDealerService
     {
-        bool UserIsAlreadyDealer(string userId);
+        bool IsDealer(string userId);
 
-        void SaveInDb(BecomeDealerFormModel dealer, string userId);
+        int Create(string name, string phoneNumber, string userId);
 
         int GetId(string userId);
     }

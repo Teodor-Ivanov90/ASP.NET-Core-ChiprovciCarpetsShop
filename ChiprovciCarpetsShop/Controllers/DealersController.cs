@@ -14,7 +14,7 @@ namespace ChiprovciCarpetsShop.Controllers
         public DealersController( IDealerService dealers)
         {
             this.dealers = dealers;
-        } 
+        }
 
         [Authorize]
         public IActionResult Become() => View();
@@ -25,7 +25,7 @@ namespace ChiprovciCarpetsShop.Controllers
         {
             var userId = this.User.Id();
 
-            var userIsAlreadyDealer = this.dealers.UserIsAlreadyDealer(userId);
+            var userIsAlreadyDealer = this.dealers.IsDealer(userId);
 
             if (userIsAlreadyDealer)
             {
@@ -37,7 +37,7 @@ namespace ChiprovciCarpetsShop.Controllers
                 return View(dealer);
             }
 
-            this.dealers.SaveInDb(dealer, userId);
+            this.dealers.Create(dealer.Name,dealer.PhoneNumber, userId);
 
             return RedirectToAction(nameof(ProductsController.All), "Products");
         }

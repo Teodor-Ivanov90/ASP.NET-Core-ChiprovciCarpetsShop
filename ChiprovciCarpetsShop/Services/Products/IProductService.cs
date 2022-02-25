@@ -16,8 +16,31 @@ namespace ChiprovciCarpetsShop.Services.Products
 
         IEnumerable<string> AllProductTypes();
 
-        bool IsTypeValid(AddProductFormModel product);
+        ProductDetailsServiceModel Details(int productId);
 
-        IEnumerable<ProductTypeFormModel> GetProductTypes();
+        bool Edit(
+                int productId,
+                string model,
+                string material,
+                decimal price,
+                string maker,
+                int yearOfMade,
+                int typeId,
+                string imageUrl);
+        int Create(string model,
+                string material,
+                decimal price,
+                string maker,
+                int yearOfMade,
+                int typeId,
+                string imageUrl,
+                int dealerId);
+
+        bool IsTypeValid(int typeId);
+
+        IEnumerable<ProductTypeServiceModel> GetProductTypes();
+
+        bool IsByDealer(int productId, int dealerId);
+        IEnumerable<ProductServiceModel> ByUser(string userId);
     }
 }

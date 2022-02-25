@@ -71,8 +71,81 @@ namespace ChiprovciCarpetsShop.Services.Products
                 Products = products
             };
         }
+        public bool Edit(
+            int productId, 
+            string model, 
+            string material, 
+            decimal price, 
+            string maker,
+            int yearOfMade, 
+            int typeId, 
+            string imageUrl)
+        {
+            var productData = this.data.Products.Find(productId);
 
+            if (productData == null)
+            {
+                return false;
+            }
 
+            productData.Model = model;
+            productData.Material = material;
+            productData.Price = price;
+            productData.Maker = maker;
+            productData.YearOfMade = yearOfMade;
+            productData.TypeId = typeId;
+            productData.ImageUrl = imageUrl;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public int Create(string model,
+            string material, 
+            decimal price, 
+            string maker, 
+            int yearOfMade,
+            int typeId, 
+            string imageUrl,
+            int dealerId)
+        {
+            var productData = new Product
+            {
+                Model = model,
+                Material = material,
+                Price = price,
+                Maker = maker,
+                YearOfMade = yearOfMade,
+                TypeId = typeId,
+                ImageUrl = imageUrl,
+                DealerId = dealerId
+            };
+
+            this.data.Products.Add(productData);
+            this.data.SaveChanges();
+
+            return productData.Id;
+        }
+
+        public ProductDetailsServiceModel Details(int productId)
+          => this.data
+            .Products
+            .Where(p => p.Id == productId)
+            .Select(p => new ProductDetailsServiceModel
+            {
+                Id = p.Id,
+                ProductType = p.Type.Name,
+                Model = p.Model,
+                 Maker = p.Maker,
+                 Material = p.Material,
+                 ImageUrl = p.ImageUrl,
+                 Price = p.Price,
+                 Year = p.YearOfMade,
+                 DealerId = p.DealerId,
+                 UserId = p.Dealer.UserId
+            })
+            .FirstOrDefault();
 
         public IEnumerable<string> AllProductTypes()
         {
@@ -82,11 +155,31 @@ namespace ChiprovciCarpetsShop.Services.Products
                  .ToList();
         }
 
-        public IEnumerable<ProductTypeFormModel> GetProductTypes()
+        public bool IsByDealer(int productId, int  dealerId)
+         => this.data
+            .Products
+            .Any(p => p.Id == productId && p.DealerId == dealerId);
+
+        public IEnumerable<ProductServiceModel> ByUser(string userId)
+          => this.data
+            .Products
+            .Where(p => p.Dealer.UserId == userId)
+            .Select(p => new ProductServiceModel
+            {
+                Id = p.Id,
+                Model = p.Model,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+                ProductType = p.Type.Name
+            })
+            .ToList();
+
+
+        public IEnumerable<ProductTypeServiceModel> GetProductTypes()
            =>
             this.data
             .ProductTypes
-            .Select(pt => new ProductTypeFormModel
+            .Select(pt => new ProductTypeServiceModel
             {
                 Id = pt.Id,
                 Name = pt.Name
@@ -94,7 +187,13 @@ namespace ChiprovciCarpetsShop.Services.Products
             .ToList();
 
 
-        public bool IsTypeValid(AddProductFormModel product)
-            => !this.data.ProductTypes.Any(pt => pt.Id == product.TypeId);
+        public bool IsTypeValid(int typeId)
+            => this.data.ProductTypes.Any(pt => pt.Id == typeId);
+
+        public bool Edit(int id, string model, string material, decimal price, string maker, int yearOfMade, int typeId, string imageUrl, int dealerId)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }

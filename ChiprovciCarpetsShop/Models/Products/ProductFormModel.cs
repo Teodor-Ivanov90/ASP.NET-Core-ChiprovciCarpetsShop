@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using ChiprovciCarpetsShop.Services.Products;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using static ChiprovciCarpetsShop.Data.DataConstants.Product;
 
 namespace ChiprovciCarpetsShop.Models.Products
 {
-    public class AddProductFormModel
+    public class ProductFormModel
     {
         [Display(Name = "Type")]
         public int TypeId { get; set; }
 
-        public IEnumerable<ProductTypeFormModel> Types { get; set; }
+        public IEnumerable<ProductTypeServiceModel> Types { get; set; }
 
         [Required]
         [StringLength(ModelMaxLength, MinimumLength = ModelMinLength)]

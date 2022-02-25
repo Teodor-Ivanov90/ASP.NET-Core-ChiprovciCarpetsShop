@@ -1,30 +1,32 @@
 ﻿using ChiprovciCarpetsShop.Data;
-using ChiprovciCarpetsShop.Data.Models;
 using ChiprovciCarpetsShop.Infrastructures.Extension;
 using ChiprovciCarpetsShop.Models.Products;
 using ChiprovciCarpetsShop.Services.Dealers;
 using ChiprovciCarpetsShop.Services.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ChiprovciCarpetsShop.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly ChiprovciCarpetsDbContext data;
         private readonly IProductService products;
         private readonly IDealerService dealers;
 
         public ProductsController(
-            ChiprovciCarpetsDbContext data, 
             IProductService products, 
             IDealerService dealers)
         {
-            this.data = data;
             this.products = products;
             this.dealers = dealers;
+        }
+
+        [Authorize]
+        public IActionResult Mine()
+        {
+            var myProducts = this.products.ByUser(this.User.Id());
+
+            return View(myProducts);
         }
 
         public IActionResult All([FromQuery] AllProductsQueryModel query)
@@ -48,14 +50,12 @@ namespace ChiprovciCarpetsShop.Controllers
         [Authorize]
         public IActionResult Add()
         {
-            var isUserDealer = this.dealers.UserIsAlreadyDealer(this.User.Id());
-
-            if (!isUserDealer)
+            if (!this.dealers.IsDealer(this.User.Id()))
             {
                 return RedirectToAction("Become", "Dealers");
             }
                 
-            return View(new AddProductFormModel
+            return View(new ProductFormModel
             {
                 Types = this.products.GetProductTypes()
             }) ;
@@ -63,11 +63,9 @@ namespace ChiprovciCarpetsShop.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddProductFormModel product)
+        public IActionResult Add(ProductFormModel product)
         {
-            var isTypeValid = this.products.IsTypeValid(product);
-
-            if (!isTypeValid)
+            if (!this.products.IsTypeValid(product.TypeId))
             {
                 this.ModelState.AddModelError(nameof(product.TypeId), "The product type is invalid!");
             }    
@@ -80,25 +78,94 @@ namespace ChiprovciCarpetsShop.Controllers
             }
 
             var dealerId = this.dealers.GetId(this.User.Id());
-                
-            var productData = new Product
+
+            if (dealerId == 0)
             {
-                Model = product.Model,
-                Material = product.Material,
-                Price = product.Price,
-                Maker = product.Maker,
-                YearOfMade = product.YearOfMade,
-                TypeId = product.TypeId,
-                ImageUrl = product.ImageUrl,
-                DealerId = dealerId
-            };
+                RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
 
-            this.data.Products.Add(productData);
-
-            this.data.SaveChanges();
+            this.products.Create(product.Model,
+                product.Material,
+                product.Price,
+                product.Maker,
+                product.YearOfMade,
+                product.TypeId,
+                product.ImageUrl,
+                dealerId);
 
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.Id();
+
+            if (!this.dealers.IsDealer(userId))
+            {
+                RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
+
+            var product = this.products.Details(id);
+
+            if (product.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            return View(new ProductFormModel
+            {
+                Model = product.Model,
+                Material = product.Material,
+                ImageUrl = product.ImageUrl,
+                Maker = product.Maker,
+                Price = product.Price,
+                YearOfMade = product.Year,
+                TypeId =product.TypeId,
+                Types = this.products.GetProductTypes()
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(int id, ProductFormModel product)
+        {
+            if (!this.products.IsTypeValid(product.TypeId))
+            {
+                this.ModelState.AddModelError(nameof(product.TypeId), "The product type is invalid!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                product.Types = this.products.GetProductTypes();
+
+                return View(product);
+            }
+
+            var dealerId = this.dealers.GetId(this.User.Id());
+
+            if (dealerId == 0)
+            {
+                RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
+
+            if (!this.products.IsByDealer(id,dealerId))
+            {
+                return BadRequest();
+            }
+
+            this.products.Edit(
+                id,
+                product.Model,
+                product.Material,
+                product.Price,
+                product.Maker,
+                product.YearOfMade,
+                product.TypeId,
+                product.ImageUrl);
+
+            return RedirectToAction(nameof(All));
+
+        }
     }
 }

@@ -18,22 +18,26 @@ namespace ChiprovciCarpetsShop.Services.Dealers
                 .Select(d => d.Id)
                 .FirstOrDefault();
 
-        public void SaveInDb(BecomeDealerFormModel dealer, string userId)
+        public int Create(string name,string phoneNumber, string userId)
         {
             var dealerData = new Dealer
             {
-                Name = dealer.Name,
-                PhoneNumber = dealer.PhoneNumber,
+                Name =name,
+                PhoneNumber = phoneNumber,
                 UserId = userId
             };
 
             this.data.Dealers.Add(dealerData);
             this.data.SaveChanges();
+
+            return dealerData.Id;
         }
 
-        public bool UserIsAlreadyDealer(string userId)
+        public bool IsDealer(string userId)
            => this.data
                 .Dealers
                 .Any(d => d.UserId == userId);
+
+        
     }
 }
