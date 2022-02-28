@@ -1,4 +1,4 @@
-﻿using ChiprovciCarpetsShop.Infrastructures.Extension;
+﻿using ChiprovciCarpetsShop.Infrastructures.Extensions;
 using ChiprovciCarpetsShop.Models.Products;
 using ChiprovciCarpetsShop.Services.Dealers;
 using ChiprovciCarpetsShop.Services.Products;
@@ -100,14 +100,14 @@ namespace ChiprovciCarpetsShop.Controllers
         {
             var userId = this.User.Id();
 
-            if (!this.dealers.IsDealer(userId))
+            if (!this.dealers.IsDealer(userId) && !User.IsAdmin())
             {
-                RedirectToAction(nameof(DealersController.Become), "Dealers");
+               return RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
 
             var product = this.products.Details(id);
 
-            if (product.UserId != userId)
+            if (product.UserId != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -143,12 +143,12 @@ namespace ChiprovciCarpetsShop.Controllers
 
             var dealerId = this.dealers.GetId(this.User.Id());
 
-            if (dealerId == 0)
+            if (dealerId == 0 && !User.IsAdmin())
             {
                 RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
 
-            if (!this.products.IsByDealer(id,dealerId))
+            if (!this.products.IsByDealer(id,dealerId) && !User.IsAdmin())
             {
                 return BadRequest();
             }

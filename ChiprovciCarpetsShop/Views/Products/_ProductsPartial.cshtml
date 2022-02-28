@@ -10,7 +10,7 @@
                     <h5 class="card-title text-center">@product.ProductType @product.Model</h5>
                     <h5 class="card-title text-center">@product.Price лв</h5>
                     <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
-                    @if (ViewBag.AllowEditing == true)
+                    @if (ViewBag.AllowEditing == true || User.IsAdmin())
                     {
                         <a asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edit</a>
                         <a asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
