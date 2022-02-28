@@ -4,6 +4,14 @@ namespace ChiprovciCarpetsShop.Data
 {
     public static class DataConstants
     {
+        public static class User
+        {
+            public const int FullNameMinLength = 5;
+            public const int FullNameMaxLength = 40;
+            public const int PasswordMinLength = 6;
+            public const int PasswordMaxLength = 100;
+        }
+
         public static class Product
         {
             public const int ModelMinLength = 3;

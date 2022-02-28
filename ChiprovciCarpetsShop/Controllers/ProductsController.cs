@@ -1,5 +1,4 @@
-﻿using ChiprovciCarpetsShop.Data;
-using ChiprovciCarpetsShop.Infrastructures.Extension;
+﻿using ChiprovciCarpetsShop.Infrastructures.Extension;
 using ChiprovciCarpetsShop.Models.Products;
 using ChiprovciCarpetsShop.Services.Dealers;
 using ChiprovciCarpetsShop.Services.Products;

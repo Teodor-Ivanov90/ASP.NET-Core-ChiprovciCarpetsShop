@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChiprovciCarpetsShop.Data
 {
-    public class ChiprovciCarpetsDbContext : IdentityDbContext
+    public class ChiprovciCarpetsDbContext : IdentityDbContext<User>
     {
         public ChiprovciCarpetsDbContext(DbContextOptions<ChiprovciCarpetsDbContext> options)
             : base(options)
@@ -34,7 +34,7 @@ namespace ChiprovciCarpetsShop.Data
 
             builder
                 .Entity<Dealer>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Dealer>(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

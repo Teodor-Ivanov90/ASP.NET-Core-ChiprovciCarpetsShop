@@ -1,4 +1,5 @@
 using ChiprovciCarpetsShop.Data;
+using ChiprovciCarpetsShop.Data.Models;
 using ChiprovciCarpetsShop.Infrastructures.Extensions;
 using ChiprovciCarpetsShop.Services.Dealers;
 using ChiprovciCarpetsShop.Services.Products;
@@ -28,13 +29,14 @@ namespace ChiprovciCarpetsShop
                 .AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options => 
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ChiprovciCarpetsDbContext>();
 
             services
