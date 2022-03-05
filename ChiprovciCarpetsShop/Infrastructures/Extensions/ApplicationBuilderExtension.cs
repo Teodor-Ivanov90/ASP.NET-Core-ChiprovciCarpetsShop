@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using static ChiprovciCarpetsShop.WebConstants;
+using static ChiprovciCarpetsShop.Areas.Admin.AdminConstants;
 
 namespace ChiprovciCarpetsShop.Infrastructures.Extensions
 {

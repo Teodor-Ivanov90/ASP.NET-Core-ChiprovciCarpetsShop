@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-using static ChiprovciCarpetsShop.WebConstants;
+using static ChiprovciCarpetsShop.Areas.Admin.AdminConstants;
 
 namespace ChiprovciCarpetsShop.Infrastructures.Extensions
 {
