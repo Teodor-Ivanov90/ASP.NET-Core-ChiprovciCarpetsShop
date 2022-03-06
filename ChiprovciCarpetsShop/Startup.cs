@@ -29,6 +29,9 @@ namespace ChiprovciCarpetsShop
                 .AddDatabaseDeveloperPageExceptionFilter();
 
             services
+                .AddAutoMapper(typeof(Startup));
+
+            services
                 .AddDefaultIdentity<User>(options =>
                 {
                     options.Password.RequireDigit = false;

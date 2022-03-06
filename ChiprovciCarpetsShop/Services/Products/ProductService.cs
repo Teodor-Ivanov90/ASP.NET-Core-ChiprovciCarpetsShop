@@ -1,4 +1,6 @@
-﻿using ChiprovciCarpetsShop.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using ChiprovciCarpetsShop.Data;
 using ChiprovciCarpetsShop.Data.Models;
 using ChiprovciCarpetsShop.Models;
 using ChiprovciCarpetsShop.Models.Products;
@@ -10,9 +12,15 @@ namespace ChiprovciCarpetsShop.Services.Products
     public class ProductService : IProductService
     {
         private readonly ChiprovciCarpetsDbContext data;
+        private readonly IMapper mapper;
 
-        public ProductService(ChiprovciCarpetsDbContext data)
-            => this.data = data;
+        public ProductService(
+            ChiprovciCarpetsDbContext data,
+            IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper;
+        } 
 
         public ProductsQueryServiceModel All(
             string type,
@@ -52,15 +60,7 @@ namespace ChiprovciCarpetsShop.Services.Products
             var products = productsQuery
                 .Skip((currentPage - 1) * productsPerPage)
                 .Take(productsPerPage)
-                .Select(p => new ProductServiceModel
-                {
-                    Id = p.Id,
-                    Model = p.Model,
-                    Price = p.Price,
-                    ImageUrl = p.ImageUrl,
-                    ProductType = p.Type.Name,
-
-                })
+                .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             return new ProductsQueryServiceModel
@@ -132,19 +132,7 @@ namespace ChiprovciCarpetsShop.Services.Products
           => this.data
             .Products
             .Where(p => p.Id == productId)
-            .Select(p => new ProductDetailsServiceModel
-            {
-                Id = p.Id,
-                ProductType = p.Type.Name,
-                Model = p.Model,
-                 Maker = p.Maker,
-                 Material = p.Material,
-                 ImageUrl = p.ImageUrl,
-                 Price = p.Price,
-                 Year = p.YearOfMade,
-                 DealerId = p.DealerId,
-                 UserId = p.Dealer.UserId
-            })
+            .ProjectTo<ProductDetailsServiceModel>(this.mapper.ConfigurationProvider)
             .FirstOrDefault();
 
         public IEnumerable<string> AllProductTypes()
@@ -164,14 +152,7 @@ namespace ChiprovciCarpetsShop.Services.Products
           => this.data
             .Products
             .Where(p => p.Dealer.UserId == userId)
-            .Select(p => new ProductServiceModel
-            {
-                Id = p.Id,
-                Model = p.Model,
-                ImageUrl = p.ImageUrl,
-                Price = p.Price,
-                ProductType = p.Type.Name
-            })
+            .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
             .ToList();
 
 
@@ -179,11 +160,7 @@ namespace ChiprovciCarpetsShop.Services.Products
            =>
             this.data
             .ProductTypes
-            .Select(pt => new ProductTypeServiceModel
-            {
-                Id = pt.Id,
-                Name = pt.Name
-            })
+            .ProjectTo<ProductTypeServiceModel>(this.mapper.ConfigurationProvider)
             .ToList();
 
 

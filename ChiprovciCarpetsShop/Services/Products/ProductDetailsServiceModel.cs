@@ -8,7 +8,7 @@
 
         public string Maker { get; init; }
 
-        public int Year { get; init; }
+        public int YearOfMade { get; init; }
 
         public int DealerId { get; init; }
 

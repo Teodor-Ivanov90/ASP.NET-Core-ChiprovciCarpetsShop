@@ -24,7 +24,7 @@ namespace ChiprovciCarpetsShop.Controllers
                    Id = p.Id,
                    Model = p.Model,
                    ImageUrl = p.ImageUrl,
-                   ProductType = p.Type.Name
+                   ProductTypeName = p.Type.Name
                })
                .Take(3)
                .ToList();

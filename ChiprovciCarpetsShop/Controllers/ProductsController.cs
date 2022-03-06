@@ -1,4 +1,5 @@
-﻿using ChiprovciCarpetsShop.Infrastructures.Extensions;
+﻿using AutoMapper;
+using ChiprovciCarpetsShop.Infrastructures.Extensions;
 using ChiprovciCarpetsShop.Models.Products;
 using ChiprovciCarpetsShop.Services.Dealers;
 using ChiprovciCarpetsShop.Services.Products;
@@ -11,13 +12,16 @@ namespace ChiprovciCarpetsShop.Controllers
     {
         private readonly IProductService products;
         private readonly IDealerService dealers;
+        private readonly IMapper mapper;
 
         public ProductsController(
-            IProductService products, 
-            IDealerService dealers)
+            IProductService products,
+            IDealerService dealers,
+            IMapper mapper)
         {
             this.products = products;
             this.dealers = dealers;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -112,17 +116,11 @@ namespace ChiprovciCarpetsShop.Controllers
                 return Unauthorized();
             }
 
-            return View(new ProductFormModel
-            {
-                Model = product.Model,
-                Material = product.Material,
-                ImageUrl = product.ImageUrl,
-                Maker = product.Maker,
-                Price = product.Price,
-                YearOfMade = product.Year,
-                TypeId =product.TypeId,
-                Types = this.products.GetProductTypes()
-            });
+            var productForm = this.mapper.Map<ProductFormModel>(product);
+
+            productForm.Types = this.products.GetProductTypes();
+
+            return View(productForm);
         }
 
         [Authorize]
