@@ -5,7 +5,7 @@
     ViewBag.AllowEditing = true;
 } 
 
-@if (Model.Any())
+@if (!Model.Any())
 {
     <h2 class="text-center">You have no products added!</h2>
 }

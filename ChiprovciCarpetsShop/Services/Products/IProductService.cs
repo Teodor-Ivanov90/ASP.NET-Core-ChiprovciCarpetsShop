@@ -18,6 +18,8 @@ namespace ChiprovciCarpetsShop.Services.Products
 
         ProductDetailsServiceModel Details(int productId);
 
+        List<ProductServiceModel> Latest();
+
         bool Edit(
                 int productId,
                 string model,

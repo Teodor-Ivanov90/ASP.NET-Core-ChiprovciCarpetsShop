@@ -167,10 +167,13 @@ namespace ChiprovciCarpetsShop.Services.Products
         public bool IsTypeValid(int typeId)
             => this.data.ProductTypes.Any(pt => pt.Id == typeId);
 
-        public bool Edit(int id, string model, string material, decimal price, string maker, int yearOfMade, int typeId, string imageUrl, int dealerId)
-        {
-            throw new System.NotImplementedException();
-        }
 
+        public List<ProductServiceModel> Latest() 
+            => this.data
+               .Products
+               .OrderByDescending(p => p.Id)
+               .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
+               .Take(3)
+               .ToList();
     }
 }
