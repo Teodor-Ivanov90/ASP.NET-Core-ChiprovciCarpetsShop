@@ -45,6 +45,8 @@ namespace ChiprovciCarpetsShop
             services
                 .AddControllersWithViews();
 
+            services.AddMemoryCache();
+
             services.AddTransient<IProductService,ProductService>();
             services.AddTransient<IDealerService,DealerService>();
         }
