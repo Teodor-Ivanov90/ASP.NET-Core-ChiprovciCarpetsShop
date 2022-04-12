@@ -4,6 +4,8 @@ using ChiprovciCarpetsShop.Services.Dealers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static ChiprovciCarpetsShop.WebConstants;
+
 namespace ChiprovciCarpetsShop.Controllers
 {
     public class DealersController : Controller
@@ -24,9 +26,7 @@ namespace ChiprovciCarpetsShop.Controllers
         {
             var userId = this.User.Id();
 
-            var userIsAlreadyDealer = this.dealers.IsDealer(userId);
-
-            if (userIsAlreadyDealer)
+            if (this.dealers.IsDealer(userId))
             {
                 return BadRequest();
             }
@@ -37,6 +37,8 @@ namespace ChiprovciCarpetsShop.Controllers
             }
 
             this.dealers.Create(dealer.Name,dealer.PhoneNumber, userId);
+
+            TempData[GlobalMessageKey] = "You successfully become a dealer!";
 
             return RedirectToAction(nameof(ProductsController.All), "Products");
         }

@@ -1,0 +1,17 @@
+﻿@model ProductDetailsServiceModel
+
+<div class="col-md-6 offset-3">
+    <div class="card" style="width: 22rem;">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="Card image cap">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item font-weight-bold text-center">Type: @Model.ProductTypeName</li>
+                <li class="list-group-item font-weight-bold text-center">Model: @Model.Model</li>
+                <li class="list-group-item font-weight-bold text-center">Maker: @Model.Maker</li>
+                <li class="list-group-item font-weight-bold text-center">Material: @Model.Material</li>
+                <li class="list-group-item font-weight-bold text-center">Year of made: @Model.YearOfMade</li>
+                <li class="list-group-item font-weight-bold text-center">Price: @Model.Price</li>
+            </ul>
+        </div>
+    </div>
+</div>

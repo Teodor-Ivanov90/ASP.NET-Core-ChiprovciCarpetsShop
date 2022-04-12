@@ -33,7 +33,7 @@ namespace ChiprovciCarpetsShop.Controllers
                 this.cache.Set(latestProductsCacheKey, latestProducts,cacheOptions);
             }
 
-            return View(products);
+            return View(latestProducts);
         }
 
 

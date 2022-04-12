@@ -6,6 +6,8 @@ using ChiprovciCarpetsShop.Services.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static ChiprovciCarpetsShop.WebConstants;
+
 namespace ChiprovciCarpetsShop.Controllers
 {
     public class ProductsController : Controller
@@ -30,6 +32,18 @@ namespace ChiprovciCarpetsShop.Controllers
             var myProducts = this.products.ByUser(this.User.Id());
 
             return View(myProducts);
+        }
+
+        public IActionResult Details(int id,string information)
+        {
+            var product = this.products.Details(id);
+
+            if (information != product.GetInformation())
+            {
+                return BadRequest();
+            }
+
+            return View(product);
         }
 
         public IActionResult All([FromQuery] AllProductsQueryModel query)
@@ -95,6 +109,8 @@ namespace ChiprovciCarpetsShop.Controllers
                 product.TypeId,
                 product.ImageUrl,
                 dealerId);
+
+            TempData[GlobalMessageKey] = "Your product was added successfully!";
 
             return RedirectToAction(nameof(All));
         }

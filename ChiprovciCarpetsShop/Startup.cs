@@ -74,6 +74,13 @@ namespace ChiprovciCarpetsShop
                 .UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultAreaRoute();
+
+                endpoints.MapControllerRoute(
+                    name: "Products Details",
+                    pattern: "/Products/Details/{id}/{information}",
+                    defaults: new {controller="Products", action="Details"
+                    });
+
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
