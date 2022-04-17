@@ -6,10 +6,12 @@ using static ChiprovciCarpetsShop.Data.DataConstants.Product;
 
 namespace ChiprovciCarpetsShop.Models.Products
 {
-    public class ProductFormModel
+    public class ProductFormModel : IProductModel
     {
         [Display(Name = "Type")]
         public int TypeId { get; set; }
+
+        public string ProductTypeName { get; set; }
 
         public IEnumerable<ProductTypeServiceModel> Types { get; set; }
 

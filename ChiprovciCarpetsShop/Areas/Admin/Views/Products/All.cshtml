@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ProductServiceModel>
+
+@{
+    ViewBag.Title = "Administration";
+}
+
+<h1>All Products</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Type</th>
+            <th scope="col">Model</th>
+            <th scope="col">Price</th>
+            <th scope="col">Approved</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td scope="col">@product.Id</td>
+                <td scope="col">@product.ProductTypeName</td>
+                <td scope="col">@product.Model</td>
+                <td scope="col">@product.Price</td>
+                <td scope="col">@(product.IsPublic ? "Yes" : "No")</td>
+                <td scope="col">
+                    <a asp-area="" asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger float-right ml-3">Delete</a>
+                    <a asp-area="" asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning float-right ml-3">Edit</a>
+                    <a asp-area="Admin" asp-controller="Products" asp-action="ChangeVisibility" asp-route-id="@product.Id" class="btn btn-info float-right ml-3">@(product.IsPublic ? "Hide" : "Show")</a>
+                    <a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" asp-route-information="@product.GetInformation()" class="btn btn-primary float-right ml-3">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

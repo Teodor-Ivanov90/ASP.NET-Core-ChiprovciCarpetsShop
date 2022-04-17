@@ -34,6 +34,8 @@ namespace ChiprovciCarpetsShop.Data.Models
         [Required]
         public string ImageUrl { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public int DealerId { get; init; }
 
         public Dealer Dealer { get; init; }

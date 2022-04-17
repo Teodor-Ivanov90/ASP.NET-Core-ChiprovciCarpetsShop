@@ -53,7 +53,8 @@ namespace ChiprovciCarpetsShop.Controllers
                 query.SearchTerm, 
                 query.Sorting, 
                 query.CurrentPage,
-                AllProductsQueryModel.ProductsPerPage);
+                AllProductsQueryModel.ProductsPerPage,
+                true);
 
             var productTypes = this.products.AllProductTypes();
 
@@ -75,8 +76,9 @@ namespace ChiprovciCarpetsShop.Controllers
             return View(new ProductFormModel
             {
                 Types = this.products.GetProductTypes()
-            }) ;
+            });
         }
+
 
         [HttpPost]
         [Authorize]
@@ -101,7 +103,7 @@ namespace ChiprovciCarpetsShop.Controllers
                 RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
 
-            this.products.Create(product.Model,
+            var productId = this.products.Create(product.Model,
                 product.Material,
                 product.Price,
                 product.Maker,
@@ -110,10 +112,13 @@ namespace ChiprovciCarpetsShop.Controllers
                 product.ImageUrl,
                 dealerId);
 
-            TempData[GlobalMessageKey] = "Your product was added successfully!";
+            TempData[GlobalMessageKey] = "Your product was added and is awaiting for approval!";
 
-            return RedirectToAction(nameof(All));
+            product.ProductTypeName = this.products.GetProductTypeName(product.TypeId);
+
+            return RedirectToAction(nameof(Details), new { id = productId, information = product.GetInformation() });
         }
+
 
         [Authorize]
         public IActionResult Edit(int id)
@@ -175,9 +180,14 @@ namespace ChiprovciCarpetsShop.Controllers
                 product.Maker,
                 product.YearOfMade,
                 product.TypeId,
-                product.ImageUrl);
+                product.ImageUrl,
+                this.User.IsAdmin());
 
-            return RedirectToAction(nameof(All));
+           TempData[GlobalMessageKey] = $"Your product was edited {(this.User.IsAdmin() ? string.Empty : "and is awaiting for approval")} !";
+
+            product.ProductTypeName = this.products.GetProductTypeName(product.TypeId);
+
+            return RedirectToAction(nameof(Details), new { id, information = product.GetInformation() });
 
         }
     }

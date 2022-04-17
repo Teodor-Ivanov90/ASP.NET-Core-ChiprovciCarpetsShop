@@ -25,7 +25,8 @@ namespace ChiprovciCarpetsShop.Controllers.Api
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
-                query.ProductsPerPage);
+                query.ProductsPerPage,
+                true);
 
 
             return new AllProductsApiResponseModel

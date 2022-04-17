@@ -15,14 +15,21 @@
         @if (userIsDealer && !userIsAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-controller="Products" asp-action="Mine">My products</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Mine">My products</a>
             </li>
         }
 
-        else if(!userIsAdmin)
+        else if (!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-controller="Dealers" asp-action="Become">Become Dealer</a>
+            </li>
+        }
+
+        else if (userIsAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Products" asp-action="all">Administration</a>
             </li>
         }
 

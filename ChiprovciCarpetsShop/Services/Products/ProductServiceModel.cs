@@ -12,6 +12,8 @@
 
         public string ImageUrl { get; set; }
 
+        public bool IsPublic { get; set; }
+
 
     }
 }

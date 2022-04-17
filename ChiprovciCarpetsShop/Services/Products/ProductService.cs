@@ -23,13 +23,15 @@ namespace ChiprovciCarpetsShop.Services.Products
         } 
 
         public ProductsQueryServiceModel All(
-            string type,
-            string searchTerm,
-            ProductSorting sorting,
-            int currentPage,
-            int productsPerPage)
+           string type = null,
+            string searchTerm = null,
+            ProductSorting sorting = ProductSorting.DateCreated,
+            int currentPage=1,
+            int productsPerPage = int.MaxValue,
+            bool publicOnly = true)
         {
-            var productsQuery = this.data.Products.AsQueryable();
+            var productsQuery = this.data.Products
+                .Where(p => publicOnly ? p.IsPublic : true);
 
             if (!string.IsNullOrWhiteSpace(type))
             {
@@ -79,7 +81,8 @@ namespace ChiprovciCarpetsShop.Services.Products
             string maker,
             int yearOfMade, 
             int typeId, 
-            string imageUrl)
+            string imageUrl,
+            bool isPublic)
         {
             var productData = this.data.Products.Find(productId);
 
@@ -95,6 +98,7 @@ namespace ChiprovciCarpetsShop.Services.Products
             productData.YearOfMade = yearOfMade;
             productData.TypeId = typeId;
             productData.ImageUrl = imageUrl;
+            productData.IsPublic = isPublic;
 
             this.data.SaveChanges();
 
@@ -119,13 +123,23 @@ namespace ChiprovciCarpetsShop.Services.Products
                 YearOfMade = yearOfMade,
                 TypeId = typeId,
                 ImageUrl = imageUrl,
-                DealerId = dealerId
+                DealerId = dealerId,
+                IsPublic = false
             };
 
             this.data.Products.Add(productData);
             this.data.SaveChanges();
 
             return productData.Id;
+        }
+
+        public void ChangeVisibility(int productId)
+        {
+            var product = this.data.Products.Find(productId);
+
+            product.IsPublic = !product.IsPublic;
+
+            this.data.SaveChanges();
         }
 
         public ProductDetailsServiceModel Details(int productId)
@@ -171,9 +185,17 @@ namespace ChiprovciCarpetsShop.Services.Products
         public List<ProductServiceModel> Latest() 
             => this.data
                .Products
+                .Where(p => p.IsPublic)
                .OrderByDescending(p => p.Id)
                .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
                .Take(3)
                .ToList();
+
+        public string GetProductTypeName(int id)
+            => this.data.ProductTypes
+                .Where(t => t.Id == id)
+                .Select(pt => pt.Name)
+                .FirstOrDefault();
+
     }
 }
