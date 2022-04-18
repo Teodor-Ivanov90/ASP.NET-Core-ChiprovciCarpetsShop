@@ -19,7 +19,7 @@ namespace ChiprovciCarpetsShop.Services.Products
 
         ProductDetailsServiceModel Details(int productId);
 
-        List<ProductServiceModel> Latest();
+        IEnumerable<ProductServiceModel> Latest();
 
         void ChangeVisibility(int productId);
 

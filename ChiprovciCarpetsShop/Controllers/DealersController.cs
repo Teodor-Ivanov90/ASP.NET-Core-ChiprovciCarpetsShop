@@ -12,10 +12,7 @@ namespace ChiprovciCarpetsShop.Controllers
     {
         private readonly IDealerService dealers;
 
-        public DealersController( IDealerService dealers)
-        {
-            this.dealers = dealers;
-        }
+        public DealersController(IDealerService dealers) => this.dealers = dealers;
 
         [Authorize]
         public IActionResult Become() => View();

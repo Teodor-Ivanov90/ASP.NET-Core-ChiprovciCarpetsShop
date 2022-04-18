@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using static ChiprovciCarpetsShop.WebConstants.Cache;
 
 namespace ChiprovciCarpetsShop.Controllers
 {
@@ -19,18 +21,17 @@ namespace ChiprovciCarpetsShop.Controllers
 
         public IActionResult Index()
         {
-            const string latestProductsCacheKey = "LatestProductsCacheKey";
 
-            var latestProducts = this.cache.Get<List<ProductServiceModel>>(latestProductsCacheKey);
+            var latestProducts = this.cache.Get<IEnumerable<ProductServiceModel>>(LatestProductsCacheKey);
 
-            if (latestProducts == null)
+            if (latestProducts == null || latestProducts.Count() == 0)
             {
                 latestProducts = this.products.Latest();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
-                this.cache.Set(latestProductsCacheKey, latestProducts,cacheOptions);
+                this.cache.Set(LatestProductsCacheKey, latestProducts,cacheOptions);
             }
 
             return View(latestProducts);

@@ -182,10 +182,10 @@ namespace ChiprovciCarpetsShop.Services.Products
             => this.data.ProductTypes.Any(pt => pt.Id == typeId);
 
 
-        public List<ProductServiceModel> Latest() 
+        public IEnumerable<ProductServiceModel> Latest() 
             => this.data
                .Products
-                .Where(p => p.IsPublic)
+               .Where(p => p.IsPublic)
                .OrderByDescending(p => p.Id)
                .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
                .Take(3)
