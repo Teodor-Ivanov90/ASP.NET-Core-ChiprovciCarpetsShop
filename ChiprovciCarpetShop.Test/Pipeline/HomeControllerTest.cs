@@ -24,7 +24,7 @@ namespace ChiprovciCarpetsShop.Test.Pipeline
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<List<ProductServiceModel>>()
-                    .Passing(m => m.Should().HaveCount(0)));
+                    .Passing(m => m.Should().HaveCount(3)));
 
     }
 }
